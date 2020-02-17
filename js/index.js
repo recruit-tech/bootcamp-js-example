@@ -1,10 +1,11 @@
 import { createStore } from './flux/index.js';
-import Todo from './components/todo.js';
+import TodoList from './components/todo-list.js';
 
 const store = createStore();
 
 store.subscribe(state => {
-  state.todos.map(todo => new Todo(todo).render());
+  const parent = document.querySelector('.todos__wrapper');
+  new TodoList(parent, { todos: state.todos }).render();
 });
 
 store.run();

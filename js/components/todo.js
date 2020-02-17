@@ -1,6 +1,6 @@
 class Todo {
-  constructor({ id, name, done }) {
-    this.parent = document.querySelector('.todos');
+  constructor(parent, { id, name, done }) {
+    this.parent = parent;
     this.element = document.createElement('li');
     this.element.className = 'todo-item';
     this.props = { id, name, done };

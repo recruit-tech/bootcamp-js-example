@@ -29,26 +29,26 @@ export const createAddTodoAction = todo => ({
 /**
  * Store Creator
  */
-const api = 'http://localhost:3000';
+const api = 'http://localhost:3000/todo';
 
-export function createStore() {
+const defaultState = {
+  todoList: [],
+  error: null
+};
+
+const headers = {
+  'Content-Type': 'application/json; charset=utf-8'
+};
+
+export function createStore(initialState = defaultState) {
   const dispatcher = new Dispatcher();
-  const state = {
-    todoList: [
-      {
-        id: 1,
-        name: 'sample',
-        done: false
-      }
-    ],
-    error: null
-  };
+  let state = initialState;
 
   const dispatch = async ({ type, payload }) => {
     switch (type) {
       case FETCH_TODO_ACTION_TYPE: {
         try {
-          const resp = await fetch(`${api}/todo`).then(d => d.json());
+          const resp = await fetch(api).then(d => d.json());
           state = { todoList: resp.todoList, error: null };
         } catch (err) {
           state.error = err;
@@ -58,9 +58,10 @@ export function createStore() {
         break;
       }
       case ADD_TODO_ACTION_TYPE: {
+        const body = JSON.stringify(payload);
+        const config = { method: 'POST', body, headers };
         try {
-          const config = { method: 'POST', body: payload };
-          const resp = await fetch(`${api}/todo`, config).then(d => d.json());
+          const resp = await fetch(api, config).then(d => d.json());
           state = { todoList: [...state.todoList, resp], error: null };
         } catch (err) {
           state.error = err;
@@ -68,6 +69,9 @@ export function createStore() {
           dispatcher.dispatch();
         }
         break;
+      }
+      default: {
+        throw new Error('unexpected action type: %o', { type, payload });
       }
     }
   };

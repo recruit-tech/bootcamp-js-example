@@ -29,6 +29,8 @@ export const createAddTodoAction = todo => ({
 /**
  * Store Creator
  */
+const api = 'http://localhost:3000';
+
 export function createStore() {
   const dispatcher = new Dispatcher();
   const state = {
@@ -41,8 +43,6 @@ export function createStore() {
     ],
     error: null
   };
-
-  const api = 'http://localhost:3000';
 
   const dispatch = async ({ type, payload }) => {
     switch (type) {

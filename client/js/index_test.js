@@ -1,1 +1,1 @@
-import './flux/index_test.js';
+import "./flux/index_test.js";

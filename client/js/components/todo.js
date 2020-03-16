@@ -1,8 +1,8 @@
 class Todo {
   constructor(parent, { id, name, done }) {
     this.parent = parent;
-    this.element = document.createElement('li');
-    this.element.className = 'todo-item';
+    this.element = document.createElement("li");
+    this.element.className = "todo-item";
     this.props = { id, name, done };
   }
 
@@ -15,7 +15,7 @@ class Todo {
           type="checkbox"
           class="todo-toggle"
           value="checked"
-          ${done ? 'checked' : ''}
+          ${done ? "checked" : ""}
         />
         <span class="todo-toggle__checkmark"></span>
       </label>

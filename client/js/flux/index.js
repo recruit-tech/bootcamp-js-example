@@ -3,24 +3,24 @@
  */
 class Dispatcher extends EventTarget {
   dispatch() {
-    this.dispatchEvent(new CustomEvent('event'));
+    this.dispatchEvent(new CustomEvent("event"));
   }
 
   subscribe(subscriber) {
-    this.addEventListener('event', subscriber);
+    this.addEventListener("event", subscriber);
   }
 }
 
 /**
  * Action Creator and Action Types
  */
-const FETCH_TODO_ACTION_TYPE = 'Fetch todo list from server';
+const FETCH_TODO_ACTION_TYPE = "Fetch todo list from server";
 export const createFetchTodoListAction = () => ({
   type: FETCH_TODO_ACTION_TYPE,
   paylaod: undefined
 });
 
-const ADD_TODO_ACTION_TYPE = 'A todo addition to store';
+const ADD_TODO_ACTION_TYPE = "A todo addition to store";
 export const createAddTodoAction = todo => ({
   type: ADD_TODO_ACTION_TYPE,
   payload: todo
@@ -29,7 +29,7 @@ export const createAddTodoAction = todo => ({
 /**
  * Store Creator
  */
-const api = 'http://localhost:3000/todo';
+const api = "http://localhost:3000/todo";
 
 const defaultState = {
   todoList: [],
@@ -37,7 +37,7 @@ const defaultState = {
 };
 
 const headers = {
-  'Content-Type': 'application/json; charset=utf-8'
+  "Content-Type": "application/json; charset=utf-8"
 };
 
 export function createStore(initialState = defaultState) {
@@ -45,6 +45,7 @@ export function createStore(initialState = defaultState) {
   let state = initialState;
 
   const dispatch = async ({ type, payload }) => {
+    console.log(type, payload);
     switch (type) {
       case FETCH_TODO_ACTION_TYPE: {
         try {
@@ -59,7 +60,7 @@ export function createStore(initialState = defaultState) {
       }
       case ADD_TODO_ACTION_TYPE: {
         const body = JSON.stringify(payload);
-        const config = { method: 'POST', body, headers };
+        const config = { method: "POST", body, headers };
         try {
           const resp = await fetch(api, config).then(d => d.json());
           state = { todoList: [...state.todoList, resp], error: null };
@@ -71,7 +72,7 @@ export function createStore(initialState = defaultState) {
         break;
       }
       default: {
-        throw new Error('unexpected action type: %o', { type, payload });
+        throw new Error("unexpected action type: %o", { type, payload });
       }
     }
   };

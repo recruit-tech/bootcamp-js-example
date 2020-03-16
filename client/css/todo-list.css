@@ -1,4 +1,4 @@
-.todos__wrapper {
+.todo-list__wrapper {
   display: flex;
   padding-top: 10px;
   flex-direction: column;
@@ -6,7 +6,7 @@
   align-items: center;
 }
 
-.todos {
+.todo-list {
   width: 500px;
   margin: 0;
   padding: 0;

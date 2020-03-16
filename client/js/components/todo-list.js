@@ -1,10 +1,10 @@
-import Todo from './todo.js';
+import Todo from "./todo.js";
 
 class TodoList {
   constructor(parent, { todoList }) {
     this.parent = parent;
-    this.element = document.createElement('ul');
-    this.element.className = 'todos';
+    this.element = document.createElement("ul");
+    this.element.className = "todo-list";
     this.props = { todoList };
   }
 

@@ -17,6 +17,4 @@ app.use((req, res, next) => {
 
 app.use("/todo", todoRouter);
 
-app.listen(PORT, () => {
-  console.log(`Listening in ${PORT}`);
-});
+app.listen(PORT);

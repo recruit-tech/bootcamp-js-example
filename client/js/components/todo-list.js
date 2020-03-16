@@ -9,12 +9,18 @@ class TodoList {
   }
 
   render() {
+    // 二回目以降のレンダリングでは
+    // 前回の DOM を破棄して 子要素すべてを rendering し直す
     if (this.parent.children.length !== 0) {
-      this.parent.removeChild(this.parent.children);
+      for (const child of this.parent.children) {
+        this.parent.removeChild(child);
+      }
     }
+
     this.props.todoList.map(todo => {
       new Todo(this.element, todo).render();
     });
+
     this.parent.appendChild(this.element);
   }
 }

@@ -15,6 +15,7 @@ class TodoForm {
           name: this.form.value
         })
       );
+      this.form.value = "";
     });
   }
 }

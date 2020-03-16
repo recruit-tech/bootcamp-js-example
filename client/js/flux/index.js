@@ -26,6 +26,12 @@ export const createAddTodoAction = todo => ({
   payload: todo
 });
 
+const CLEAR_ERROR = "Clear error from state";
+export const clearError = () => ({
+  type: CLEAR_ERROR,
+  payload: undefined
+});
+
 /**
  * Store Creator
  */
@@ -70,6 +76,10 @@ export function createStore(initialState = defaultState) {
           dispatcher.dispatch();
         }
         break;
+      }
+      case CLEAR_ERROR: {
+        state.error = null;
+        dispatcher.dispatch();
       }
       default: {
         throw new Error("unexpected action type: %o", { type, payload });

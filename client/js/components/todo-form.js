@@ -10,11 +10,7 @@ class TodoForm {
   mount() {
     this.button.addEventListener("click", e => {
       e.preventDefault();
-      store.dispatch(
-        createAddTodoAction({
-          name: this.form.value
-        })
-      );
+      store.dispatch(createAddTodoAction({ name: this.form.value }));
       this.form.value = "";
     });
   }

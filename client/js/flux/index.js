@@ -26,6 +26,12 @@ export const createAddTodoAction = todo => ({
   payload: todo
 });
 
+const UPDATE_TODO_ACTION_TYPE = "Update todo state";
+export const updateTodoAction = todo => ({
+  type: UPDATE_TODO_ACTION_TYPE,
+  payload: todo
+});
+
 const CLEAR_ERROR = "Clear error from state";
 export const clearError = () => ({
   type: CLEAR_ERROR,
@@ -46,45 +52,66 @@ const headers = {
   "Content-Type": "application/json; charset=utf-8"
 };
 
+const reducer = async (prevState, { type, payload }) => {
+  switch (type) {
+    case FETCH_TODO_ACTION_TYPE: {
+      try {
+        const resp = await fetch(api).then(d => d.json());
+        return { todoList: resp.todoList, error: null };
+      } catch (err) {
+        return { ...prevState, error: err };
+      }
+    }
+    case UPDATE_TODO_ACTION_TYPE: {
+      const { id, ...body } = payload;
+      try {
+        const resp = await fetch(`${api}/${payload.id}`, {
+          method: "PATCH",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json; charset=utf-8"
+          },
+          body: JSON.stringify(body)
+        }).then(d => d.json());
+        const idx = prevState.todoList.findIndex(todo => todo.id === resp.id);
+        if (idx === -1) return prevState;
+        const nextTodoList = prevState.todoList.concat();
+        nextTodoList[idx] = resp;
+        return { todoList: nextTodoList, error: null };
+      } catch (err) {
+        return { ...prevState, error: err };
+      }
+    }
+    case ADD_TODO_ACTION_TYPE: {
+      const body = JSON.stringify(payload);
+      const config = { method: "POST", body, headers };
+      try {
+        const resp = await fetch(api, config).then(d => d.json());
+        return { todoList: [...prevState.todoList, resp], error: null };
+      } catch (err) {
+        return { ...prevState, error: err };
+      }
+    }
+    case CLEAR_ERROR: {
+      return { ...prevState, error: null };
+    }
+    default: {
+      throw new Error("unexpected action type: %o", { type, payload });
+    }
+  }
+};
+
 export function createStore(initialState = defaultState) {
   const dispatcher = new Dispatcher();
   let state = initialState;
 
   const dispatch = async ({ type, payload }) => {
-    console.log(type, payload);
-    switch (type) {
-      case FETCH_TODO_ACTION_TYPE: {
-        try {
-          const resp = await fetch(api).then(d => d.json());
-          state = { todoList: resp.todoList, error: null };
-        } catch (err) {
-          state.error = err;
-        } finally {
-          dispatcher.dispatch();
-        }
-        break;
-      }
-      case ADD_TODO_ACTION_TYPE: {
-        const body = JSON.stringify(payload);
-        const config = { method: "POST", body, headers };
-        try {
-          const resp = await fetch(api, config).then(d => d.json());
-          state = { todoList: [...state.todoList, resp], error: null };
-        } catch (err) {
-          state.error = err;
-        } finally {
-          dispatcher.dispatch();
-        }
-        break;
-      }
-      case CLEAR_ERROR: {
-        state.error = null;
-        dispatcher.dispatch();
-      }
-      default: {
-        throw new Error("unexpected action type: %o", { type, payload });
-      }
-    }
+    console.group(type);
+    console.log("prev", state);
+    state = await reducer(state, { type, payload });
+    console.log("next", state);
+    console.groupEnd();
+    dispatcher.dispatch();
   };
 
   const subscribe = subscriber => {

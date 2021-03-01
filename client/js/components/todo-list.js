@@ -9,16 +9,16 @@ class TodoList {
   }
 
   render() {
-    const children = this.props.todoList.map(todo => {
-      const component = new Todo(this.element, todo)
-      component.render()
-      return component
+    const children = this.props.todoList.map((todo) => {
+      const component = new Todo(this.element, todo);
+      component.render();
+      return component;
     });
 
     if (this.parent.children.length === 0) {
       this.parent.appendChild(this.element);
     } else {
-      this.parent.replaceChildren(...children.map(c => c.element));
+      this.parent.replaceChildren(...children.map((c) => c.element));
     }
   }
 }

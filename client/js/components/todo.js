@@ -24,7 +24,7 @@ class Todo {
 
   render() {
     const { id, name, done } = this.props;
-    const next = document.createElement("li")
+    const next = document.createElement("li");
     next.className = "todo-item";
     next.innerHTML = `
       <label class="todo-toggle__container">
@@ -41,11 +41,11 @@ class Todo {
       <div data-todo-id="${id}" class="todo-remove-button">x</div>
     `;
     if (!this.element) {
-      this.parent.appendChild(next)
+      this.parent.appendChild(next);
     } else {
       this.parent.replaceChild(this.element, next);
     }
-    this.element = next
+    this.element = next;
     this.mount();
   }
 }

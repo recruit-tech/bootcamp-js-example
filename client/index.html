@@ -21,7 +21,9 @@
           </div>
         </form>
       </div>
-      <div class="todo-list__wrapper"></div>
+      <div class="todo-list__wrapper">
+        <ul class="todos" id="todo-list"></ul>
+      </div>
       <div class="todo-footer">
         <div class="done-items-num">
           <span class="done-items-num__value">0</span><span> items done</span>
@@ -29,6 +31,21 @@
       </div>
     </main>
     <footer class="application-footer"></footer>
-    <script type="module" src="/js/index.js"></script>
+    <template class="todo-item-template">
+      <li class="todo-item">
+        <label class="todo-toggle__container">
+          <input
+            data-todo-id="-1"
+            type="checkbox"
+            class="todo-toggle"
+            value="checked"
+            />
+          <span class="todo-toggle__checkmark"></span>
+        </label>
+        <div class="todo-name"></div>
+        <div data-todo-id="-1" class="todo-remove-button">x</div>
+      </li>
+    </template>
+    <script async type="module" src="/js/index.js"></script>
   </body>
 </html>

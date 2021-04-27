@@ -4,14 +4,15 @@ import { createAddTodoAction } from "../flux/index.js";
 class TodoForm {
   constructor() {
     this.button = document.querySelector(".todo-form__submit");
-    this.form = document.querySelector(".todo-form__input");
+    this.form = document.querySelector(".todo-form");
   }
 
   mount() {
-    this.button.addEventListener("click", (e) => {
+    this.form.addEventListener("submit", function (e) {
       e.preventDefault();
-      store.dispatch(createAddTodoAction({ name: this.form.value }));
-      this.form.value = "";
+      store.dispatch(createAddTodoAction({ name: this.name.value }));
+      this.name.value = "";
+      return false;
     });
   }
 }

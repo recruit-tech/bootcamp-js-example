@@ -5,15 +5,16 @@ import TodoForm from "./components/todo-form.js";
 
 new TodoForm().mount();
 
+const handleError = (err) => {
+  console.error(err);
+  alert(err);
+  store.dispatch(clearError());
+}
+
 store.subscribe((state) => {
-  if (state.error == null) {
-    const parent = document.querySelector(".todo-list__wrapper");
-    new TodoList(parent, { todoList: state.todoList }).render();
-  } else {
-    console.error(state.error);
-    alert(state.error);
-    store.dispatch(clearError());
-  }
+  if (state.error) return handleError(state.error)
+  const parent = document.querySelector(".todo-list__wrapper");
+  new TodoList(parent, { todoList: state.todoList }).render();
 });
 
 store.dispatch(createFetchTodoListAction());

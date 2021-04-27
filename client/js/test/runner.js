@@ -1,4 +1,5 @@
+let count = 0
 export function test(testFunc) {
-  console.log(`run: ${testFunc.name}`);
-  setTimeout(testFunc(), 1);
+  console.info(`run: ${testFunc.name}`);
+  setTimeout(testFunc, count++ * 200);
 }
